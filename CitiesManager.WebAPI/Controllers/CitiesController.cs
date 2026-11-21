@@ -11,14 +11,24 @@ public class CitiesController : CustomControllerBase
     _context = context;
   }
 
-  // GET: api/City
+  // GET: api/Cities
+  /// <summary>
+  /// To get list of cities from cities table
+  /// </summary>
+  /// <returns></returns>
   [HttpGet]
-  public async Task<ActionResult<IEnumerable<City>>> GetCity()
+  [Produces("application/json")]
+  public async Task<ActionResult<IEnumerable<City>>> GetCities()
   {
     return await _context.Cities.ToListAsync();
   }
 
   // GET: api/City/5
+  /// <summary>
+  /// To get city by provided city id
+  /// </summary>
+  /// <param name="cityid"></param>
+  /// <returns></returns>
   [HttpGet("{cityid}")]
   public async Task<ActionResult<City>> GetCity(System.Guid cityid)
   {
@@ -79,7 +89,7 @@ public class CitiesController : CustomControllerBase
     _context.Cities.Add(city);
     await _context.SaveChangesAsync();
 
-    return CreatedAtAction("GetCity", new { cityid = city.CityId }, city);  //201
+    return CreatedAtAction("GetCities", new { cityid = city.CityId }, city);  //201
   }
 
   // DELETE: api/City/5
