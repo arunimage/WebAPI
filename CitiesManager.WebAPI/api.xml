@@ -4,17 +4,23 @@
         <name>CitiesManager.WebAPI</name>
     </assembly>
     <members>
-        <member name="M:CitiesController.GetCities">
+        <member name="M:CitiesManager.WebAPI.Controllers.v1.CitiesController.GetCities">
             <summary>
             To get list of cities from cities table
             </summary>
             <returns></returns>
         </member>
-        <member name="M:CitiesController.GetCity(System.Guid)">
+        <member name="M:CitiesManager.WebAPI.Controllers.v1.CitiesController.GetCity(System.Guid)">
             <summary>
             To get city by provided city id
             </summary>
             <param name="cityid"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CitiesManager.WebAPI.Controllers.v2.CitiesController.GetCities">
+            <summary>
+            To get list of cities from cities table from version 2.0
+            </summary>
             <returns></returns>
         </member>
         <member name="T:CitiesManager.WebAPI.Migrations.Initial">
