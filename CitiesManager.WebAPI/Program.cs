@@ -44,9 +44,9 @@ builder.Services.AddSwaggerGen(options =>
 {
   options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "api.xml"));
 
-  options.SwaggerDoc("v1", new Microsoft.OpenApi.OpenApiInfo() { Title = "Cities Web API", Version="1.0" });
+  options.SwaggerDoc("v1", new Microsoft.OpenApi.OpenApiInfo() { Title = "Custom API Name", Version = "1.0" });
 
-  options.SwaggerDoc("v2", new Microsoft.OpenApi.OpenApiInfo() { Title = "Cities Web API", Version = "2.0" });
+  options.SwaggerDoc("v2", new Microsoft.OpenApi.OpenApiInfo() { Title = "Custom API Name", Version = "2.0" });
 });
 
 builder.Services.AddApiVersioning()
@@ -55,6 +55,35 @@ builder.Services.AddApiVersioning()
     options.GroupNameFormat = "'v'VVV";
     options.SubstituteApiVersionInUrl = true;
   });
+
+builder.Services.AddCors(options =>
+{
+  options.AddDefaultPolicy(policyBuilder =>
+  {
+    //policyBuilder.WithOrigins("http://localhost:4200");
+
+    var allowedOrigins = builder.Configuration
+            .GetSection("AllowedOrigins")
+            .Get<string[]>();
+
+    policyBuilder.WithOrigins(allowedOrigins);
+
+    policyBuilder.WithHeaders("Authorization", "origin", "accept", "content-type")
+    .WithMethods("GET", "POST", "PUT", "DELETE");
+  });
+
+  options.AddPolicy("4100Client", policyBuilder =>
+  {
+    var allowedOrigins = builder.Configuration
+            .GetSection("AllowedOrigins2")
+            .Get<string[]>();
+
+    policyBuilder.WithOrigins(allowedOrigins);
+
+    policyBuilder.WithHeaders("Authorization", "origin", "accept")
+    .WithMethods("GET");
+  });
+});
 
 var app = builder.Build();
 
@@ -68,6 +97,9 @@ app.UseSwaggerUI(options =>
   options.SwaggerEndpoint("/swagger/v1/swagger.json", "1.0");
   options.SwaggerEndpoint("/swagger/v2/swagger.json", "2.0");
 });
+
+app.UseRouting();
+app.UseCors();
 app.UseAuthorization();
 
 app.MapControllers();

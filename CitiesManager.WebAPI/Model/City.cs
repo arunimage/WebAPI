@@ -5,7 +5,7 @@ namespace CitiesManager.WebAPI.Model
   public class City
   {
     [Key]
-    public Guid CityId { get; set; }
+    public Guid CityID { get; set; }
 
     [Required(ErrorMessage = "City Name can't be blank")]
     public string? CityName { get; set; }

@@ -20,12 +20,12 @@ namespace CitiesManager.WebAPI.DatabaseContext
       modelBuilder.Entity<City>().HasData(
         new City
         {
-          CityId = Guid.Parse("11111111-1111-1111-1111-111111111111"),
+          CityID = Guid.Parse("11111111-1111-1111-1111-111111111111"),
           CityName = "Hyderabad"
         },
         new City
         {
-          CityId = Guid.Parse("22222222-2222-2222-2222-222222222222"),
+          CityID = Guid.Parse("22222222-2222-2222-2222-222222222222"),
           CityName = "Bangalore"
         }
         );

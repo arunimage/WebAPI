@@ -3,10 +3,12 @@ using Microsoft.EntityFrameworkCore;
 using CitiesManager.WebAPI.Model;
 using CitiesManager.WebAPI.DatabaseContext;
 using Asp.Versioning;
+using Microsoft.AspNetCore.Cors;
 
 namespace CitiesManager.WebAPI.Controllers.v1
 {
   [ApiVersion("1.0")]
+  //[EnableCors("4100Client")]
   public class CitiesController : CustomControllerBase
   {
     private readonly ApplicationDbContext _context;
@@ -24,7 +26,10 @@ namespace CitiesManager.WebAPI.Controllers.v1
     //[Produces("application/xml")]
     public async Task<ActionResult<IEnumerable<City>>> GetCities()
     {
-      return await _context.Cities.ToListAsync();
+      var cities = await _context.Cities
+        .OrderBy(temp => temp.CityName)
+        .ToListAsync();
+      return cities;
     }
 
     // GET: api/City/5
@@ -38,7 +43,7 @@ namespace CitiesManager.WebAPI.Controllers.v1
     {
       //var city = await _context.Cities.FindAsync(cityid);
 
-      var city = await _context.Cities.FirstOrDefaultAsync(temp => temp.CityId == cityid);
+      var city = await _context.Cities.FirstOrDefaultAsync(temp => temp.CityID == cityid);
 
       if (city == null)
       {
@@ -52,9 +57,9 @@ namespace CitiesManager.WebAPI.Controllers.v1
     // PUT: api/City/5
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPut("{cityID}")]
-    public async Task<IActionResult> PutCity(System.Guid? cityID, [Bind(nameof(City.CityId), nameof(City.CityName))] City city)
+    public async Task<IActionResult> PutCity(System.Guid? cityID, [Bind(nameof(City.CityID), nameof(City.CityName))] City city)
     {
-      if (cityID != city.CityId)
+      if (cityID != city.CityID)
       {
         return BadRequest();  //400
       }
@@ -88,12 +93,12 @@ namespace CitiesManager.WebAPI.Controllers.v1
     // POST: api/City
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost]
-    public async Task<ActionResult<City>> PostCity([Bind(nameof(City.CityId), nameof(City.CityName))] City city)
+    public async Task<ActionResult<City>> PostCity([Bind(nameof(City.CityID), nameof(City.CityName))] City city)
     {
       _context.Cities.Add(city);
       await _context.SaveChangesAsync();
 
-      return CreatedAtAction("GetCities", new { cityid = city.CityId }, city);  //201
+      return CreatedAtAction("GetCities", new { cityid = city.CityID }, city);  //201
     }
 
     // DELETE: api/City/5
@@ -114,7 +119,7 @@ namespace CitiesManager.WebAPI.Controllers.v1
 
     private bool CityExists(System.Guid? cityid)
     {
-      return _context.Cities.Any(e => e.CityId == cityid);
+      return _context.Cities.Any(e => e.CityID == cityid);
     }
   }
 }
