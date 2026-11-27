@@ -1,9 +1,8 @@
+using Asp.Versioning;
+using CitiesManager.Core.Entities;
+using CitiesManager.Infrastructure.DatabaseContext;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using CitiesManager.WebAPI.Model;
-using CitiesManager.WebAPI.DatabaseContext;
-using Asp.Versioning;
-using Microsoft.AspNetCore.Cors;
 
 namespace CitiesManager.WebAPI.Controllers.v1
 {
